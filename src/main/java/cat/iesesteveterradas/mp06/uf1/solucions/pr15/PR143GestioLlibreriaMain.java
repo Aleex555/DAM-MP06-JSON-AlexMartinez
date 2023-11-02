@@ -1,6 +1,5 @@
 package cat.iesesteveterradas.mp06.uf1.solucions.pr15;
 
-
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -26,21 +25,26 @@ public class PR143GestioLlibreriaMain {
                 if (jsonValue.getValueType() == JsonValue.ValueType.OBJECT) {
                     JsonObject jsonObject = jsonValue.asJsonObject();
                     if (jsonObject.getInt("id") == 1) {
-                        // Modifica el año del objeto con "id" igual a 2
                         JsonObject modifiedObject = modifyJsonObject(jsonObject);
                         newArrayBuilder.add(modifiedObject);
+                    } else if (jsonObject.getInt("id") == 2) {
+                        continue;
                     } else {
-                        // Mantén los otros objetos intactos
                         newArrayBuilder.add(jsonObject);
                     }
                 }
             }
+            JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
+            objectBuilder.add("id", 4);
+            objectBuilder.add("títol", "Històries de la ciutat");
+            objectBuilder.add("autor", "Miquel Soler");
+            objectBuilder.add("any", 2022);
+            newArrayBuilder.add(objectBuilder);
 
             JsonArray modifiedJsonArray = newArrayBuilder.build();
 
-            try (JsonWriter jsonWriter = Json.createWriter(new FileWriter("data/llibres_input.json"))) {
+            try (JsonWriter jsonWriter = Json.createWriter(new FileWriter("data/llibres_output.json"))) {
                 jsonWriter.writeArray(modifiedJsonArray);
-                System.out.println("Dades modificades i guardades amb èxit!");
             }
         } catch (IOException e) {
             e.printStackTrace();
